@@ -6,6 +6,7 @@ using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 
 namespace LSP_Server.Workspace
@@ -16,6 +17,11 @@ namespace LSP_Server.Workspace
 
         public DictionaryManager()
         {
+            /*
+             * Dictionary sourced from Manas Sharma and Kai Saru
+             * https://www.bragitoff.com/2016/03/english-dictionary-in-csv-format/
+             * https://docs.google.com/spreadsheets/d/1vgNJpEWVppQv1CYPE8O_Z72mugHiqbMCvWbQPsEATcY/edit#gid=0
+             */
             string path = Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), @"Resources\dictionary.csv");
             var tempDict = new Dictionary<string, List<string>>();
             using (TextFieldParser parser = new TextFieldParser(path))
@@ -32,13 +38,7 @@ namespace LSP_Server.Workspace
                     {
                         definitions = new List<string>();
                     }
-                    var definition = new StringBuilder();
-                    if(fields[1].Length > 0)
-                    {
-                        definition.Append(fields[1]).Append(' ');
-                    }
-                    definition.Append(fields[2]);
-                    definitions.Add(definition.ToString());
+                    definitions.AddRange(Regex.Split(fields[1], @"(?=[[])"));
 
                     if (!recordExists)
                     {

@@ -4,11 +4,19 @@ using OmniSharp.Extensions.LanguageServer.Protocol.Models;
 using System.Threading.Tasks;
 using System.Threading;
 using System.Collections.Generic;
+using LSP_Server.Workspace;
+using System.Linq;
 
 namespace LSP_Server.Handlers
 {
     public class CompletionHandler : ICompletionHandler
     {
+
+        private readonly DictionaryManager _dictionaryManager;
+        public CompletionHandler(DictionaryManager dictionaryManager)
+        {
+            _dictionaryManager = dictionaryManager;
+        }
 
         public CompletionRegistrationOptions GetRegistrationOptions(CompletionCapability capability, ClientCapabilities clientCapabilities)
         {
@@ -25,10 +33,9 @@ namespace LSP_Server.Handlers
                 {
                     new CompletionItem
                     {
-                        Label = "Try This",
+                        Label = _dictionaryManager.GetDefinitions("Keep").FirstOrDefault(),
                         Kind = CompletionItemKind.Text,
-                        InsertText = "Try This"
-                    }
+                        InsertText = _dictionaryManager.GetDefinitions("Keep").FirstOrDefault()                    }
                 }
             , isIncomplete: false));
     }

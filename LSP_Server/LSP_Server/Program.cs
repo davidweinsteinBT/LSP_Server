@@ -33,6 +33,7 @@ namespace LSP_Server
                                     }
                                 );
                                 services.AddSingleton<DocumentsManager>();
+                                services.AddSingleton<DictionaryManager>();
                             }
                        )
 

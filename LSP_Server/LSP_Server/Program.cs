@@ -23,6 +23,7 @@ namespace LSP_Server
                        .AddDefaultLoggingProvider()
                        .WithHandler<TextDocumentSyncHandler>()
                        .WithHandler<CompletionHandler>()
+                       .WithHandler<HoverHandler>()
                        .WithServices(
                             services =>
                             {
@@ -34,6 +35,7 @@ namespace LSP_Server
                                 );
                                 services.AddSingleton<DocumentsManager>();
                                 services.AddSingleton<DictionaryManager>();
+                                services.AddSingleton<PositionManager>();
                             }
                        )
 

@@ -26,7 +26,8 @@ namespace LSP_Server.Workspace
                 {
                     var fields = parser.ReadFields();
                     List<string> definitions;
-                    var recordExists = tempDict.TryGetValue(fields[0], out definitions);
+                    var word = fields[0].ToLower();
+                    var recordExists = tempDict.TryGetValue(word, out definitions);
                     if(!recordExists)
                     {
                         definitions = new List<string>();
@@ -41,11 +42,11 @@ namespace LSP_Server.Workspace
 
                     if (!recordExists)
                     {
-                        tempDict.Add(fields[0], definitions);
+                        tempDict.Add(word, definitions);
                     }
                     else
                     {
-                        tempDict[fields[0]] = definitions;
+                        tempDict[word] = definitions;
                     }
                 }
             }
@@ -54,11 +55,11 @@ namespace LSP_Server.Workspace
 
         public IEnumerable<string> GetDefinitions(string word)
         {
-            if (!_dictionary.Contains(word))
+            if (!_dictionary.Contains(word.ToLower()))
             {
-                return null;
+                return new List<string>();
             }
-            return _dictionary[word];
+            return _dictionary[word.ToLower()];
         }
 
     }

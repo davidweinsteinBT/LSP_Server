@@ -18,24 +18,13 @@ namespace LSP_Server
     {
         private static async Task Main(string[] args)
         {
-            //Log.Logger = new LoggerConfiguration()
-            //    .Enrich.FromLogContext()
-            //    .WriteTo.File("log.txt")
-            //    .MinimumLevel.Verbose()
-            //    .CreateLogger();
-
             var server = await LanguageServer.From(
                 options =>
                     options
                        .WithInput(Console.OpenStandardInput())
                        .WithOutput(Console.OpenStandardOutput())
-                       .ConfigureLogging(x => x.AddSerilog(Log.Logger)
-                            .AddLanguageProtocolLogging()
-                            .SetMinimumLevel(LogLevel.Trace)
-                        )
                        .WithHandler<TextDocumentSyncHandler>()
                        .WithHandler<HoverHandler>()
-                       .WithHandler<ReferencesHandler>()
                        .WithServices(
                             services =>
                             {
@@ -50,26 +39,6 @@ namespace LSP_Server
                                 services.AddSingleton<PositionManager>();
                             }
                        )
-                       .OnInitialize(
-                            async (server, request, token) =>
-                            {
-                                var documentsManager = server.Services.GetService<DocumentsManager>();
-                                var folderPaths = new List<string>();
-
-                                if (request.Capabilities.Workspace.WorkspaceFolders)
-                                {
-                                    folderPaths.AddRange(request.WorkspaceFolders?.Select(f => f.Uri.GetFileSystemPath()) ?? new List<string>());
-                                }
-
-                                if (folderPaths == null)
-                                {
-                                    folderPaths = request.RootUri == null ? new List<string>() { request.RootUri.GetFileSystemPath() } : new List<string>();
-                                }
-
-                                documentsManager.InitializeWorkspace(folderPaths);
-                            }
-                       )
-
             );
 
             await server.WaitForExit;

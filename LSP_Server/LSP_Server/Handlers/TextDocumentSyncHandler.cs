@@ -46,7 +46,16 @@ namespace LSP_Server.Handlers
         {
             return new TextDocumentOpenRegistrationOptions()
             {
-                DocumentSelector = DocumentSelector.ForLanguage("plaintext"),
+                DocumentSelector = new DocumentSelector(
+                    new DocumentFilter()
+                    {
+                        Pattern = "**/*.txt"
+                    },
+                    new DocumentFilter()
+                    {
+                        Language = "plaintext"
+                    }
+                ),
             };
 
         }

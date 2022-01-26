@@ -18,21 +18,11 @@ namespace LSP_Server
     {
         private static async Task Main(string[] args)
         {
-            //Log.Logger = new LoggerConfiguration()
-            //    .Enrich.FromLogContext()
-            //    .WriteTo.File("log.txt")
-            //    .MinimumLevel.Verbose()
-            //    .CreateLogger();
-
             var server = await LanguageServer.From(
                 options =>
                     options
                        .WithInput(Console.OpenStandardInput())
                        .WithOutput(Console.OpenStandardOutput())
-                       .ConfigureLogging(x => x.AddSerilog(Log.Logger)
-                            .AddLanguageProtocolLogging()
-                            .SetMinimumLevel(LogLevel.Trace)
-                        )
                        .WithHandler<TextDocumentSyncHandler>()
                        .WithHandler<HoverHandler>()
                        .WithHandler<ReferencesHandler>()

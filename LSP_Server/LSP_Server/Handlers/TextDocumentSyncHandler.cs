@@ -4,6 +4,7 @@ using OmniSharp.Extensions.LanguageServer.Protocol;
 using OmniSharp.Extensions.LanguageServer.Protocol.Client.Capabilities;
 using OmniSharp.Extensions.LanguageServer.Protocol.Document;
 using OmniSharp.Extensions.LanguageServer.Protocol.Models;
+using OmniSharp.Extensions.LanguageServer.Protocol.Server;
 using OmniSharp.Extensions.LanguageServer.Protocol.Server.Capabilities;
 using System;
 using System.Collections.Generic;
@@ -48,20 +49,20 @@ namespace LSP_Server.Handlers
 
         public Task<Unit> Handle(DidChangeTextDocumentParams request, CancellationToken cancellationToken)
         {
-            var documentPath = request.TextDocument.Uri.ToString();
+            var documentUri = request.TextDocument.Uri;
             var text = request.ContentChanges.FirstOrDefault()?.Text;
 
-            _documentsManager.UpdateBuffer(documentPath, text);
+            _documentsManager.UpdateBuffer(documentUri, text);
 
             return Unit.Task;
         }
 
         public Task<Unit> Handle(DidOpenTextDocumentParams request, CancellationToken cancellationToken)
         {
-            var documentPath = request.TextDocument.Uri.ToString();
+            var documentUri = request.TextDocument.Uri;
             var text = request.TextDocument.Text;
 
-            _documentsManager.UpdateBuffer(documentPath, text);
+            _documentsManager.UpdateBuffer(documentUri, text);
 
             return Unit.Task;
         }

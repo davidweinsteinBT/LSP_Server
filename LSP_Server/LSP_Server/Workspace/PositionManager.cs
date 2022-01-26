@@ -57,7 +57,7 @@ namespace LSP_Server.Workspace
 
         private (int startIndex, int endIndex) GetWordRangeIndices(string text, int index)
         {
-            var delimiters = new char[] { ' ', '\n' };
+            var delimiters = new char[] { ' ', '\n', '.', ',', '\'', '/', '\\', '"', ':', ';', '{', '}', '[', ']' };
             var endIndex = text.IndexOfAny(delimiters, index);
             var startIndex = text.LastIndexOfAny(delimiters, index) + 1;
 

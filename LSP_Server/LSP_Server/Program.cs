@@ -18,11 +18,11 @@ namespace LSP_Server
     {
         private static async Task Main(string[] args)
         {
-            Log.Logger = new LoggerConfiguration()
-                .Enrich.FromLogContext()
-                .WriteTo.File("log.txt")
-                .MinimumLevel.Verbose()
-                .CreateLogger();
+            //Log.Logger = new LoggerConfiguration()
+            //    .Enrich.FromLogContext()
+            //    .WriteTo.File("log.txt")
+            //    .MinimumLevel.Verbose()
+            //    .CreateLogger();
 
             var server = await LanguageServer.From(
                 options =>

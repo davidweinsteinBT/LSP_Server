@@ -28,7 +28,16 @@ namespace LSP_Server.Handlers
         {
             return new TextDocumentChangeRegistrationOptions()
             {
-                DocumentSelector = DocumentSelector.ForLanguage("plaintext"),
+                DocumentSelector = new DocumentSelector(
+                    new DocumentFilter()
+                    {
+                        Pattern = "**/*.txt"
+                    },
+                    new DocumentFilter()
+                    {
+                        Language = "plaintext"
+                    }
+                ),
                 SyncKind = TextDocumentSyncKind.Full        
             };
         }

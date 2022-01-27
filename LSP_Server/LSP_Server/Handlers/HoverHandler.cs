@@ -47,23 +47,10 @@ namespace LSP_Server.Handlers
             var wordAtPos = _positionManager.GetWordAtPosition(document, request.Position);
             var definitions = _dictionaryManager.GetDefinitions(wordAtPos);
 
-            try
+            return Task.FromResult(new Hover()
             {
-                return Task.FromResult(new Hover()
-                {
-                    Contents = new MarkedStringsOrMarkupContent(definitions.Select(d => new MarkedString(d)))
-                });
-            }
-            catch
-            {
-                var sb = new StringBuilder();
-                sb.AppendLine("word: " + wordAtPos);
-                foreach(var def in definitions)
-                {
-                    sb.AppendLine(def);
-                }
-                throw new Exception(sb.ToString());
-            }
+                Contents = new MarkedStringsOrMarkupContent(definitions.Select(d => new MarkedString(d)))
+            });
         }
     }
 }
